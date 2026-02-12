@@ -71,7 +71,7 @@ public class Program {
 		try {
 			System.out.println();
 			System.out.println("--- UPDATE seller SET BaseSalary = +200 WHERE (DepartmentId = 2) ---");
-			ps = conn.prepareStatement("UPDATE seller SET BaseSalary = +? WHERE (DepartmentId = ?)");
+			ps = conn.prepareStatement("UPDATE seller SET BaseSalary = BaseSalary +? WHERE (DepartmentId = ?)");
 			ps.setDouble(1, 200);
 			ps.setInt(2, 2);
 			int rowsAffected = ps.executeUpdate();
