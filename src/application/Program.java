@@ -9,6 +9,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import db.DB;
+import db.DbIntegrityException;
 
 public class Program {
 
@@ -67,6 +68,7 @@ public class Program {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+
 		// Update
 		try {
 			System.out.println();
@@ -86,6 +88,42 @@ public class Program {
 			e.printStackTrace();
 		}
 
+		// Delete
+		try {
+			System.out.println();
+			System.out.println("--- DELETE FROM seller WHERE Name = Carlos Magnetico");
+			ps = conn.prepareStatement("DELETE FROM seller WHERE Name = ?");
+			ps.setString(1, "Carlos Magnetico");
+			int rowsAffected = ps.executeUpdate();
+			if (rowsAffected > 0) {
+				System.out.println("Delete done.");
+			} else {
+				System.out.println("No rows affected.");
+			}
+			System.out.println("--- --- --- --- --- --- --- ---");
+
+		} catch (SQLException e) {
+			throw new DbIntegrityException(e.getMessage());
+		}
+
+		//Delete - Exception test
+//		try {
+//			System.out.println();
+//			System.out.println("--- DELETE FROM department WHERE Id = 2");
+//			ps = conn.prepareStatement("DELETE FROM department WHERE Id = ?");
+//			ps.setInt(1, 2);
+//			int rowsAffected = ps.executeUpdate();
+//			if (rowsAffected > 0) {
+//				System.out.println("Delete done.");
+//			} else {
+//				System.out.println("No rows affected.");
+//			}
+//			System.out.println("--- --- --- --- --- --- --- ---");
+//
+//		} catch (SQLException e) {
+//			throw new DbIntegrityException(e.getMessage());
+//		}
+		
 		// Closing connections
 		finally {
 			DB.closeResultSet(rs);
