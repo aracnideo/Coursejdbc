@@ -1,15 +1,9 @@
 package application;
 
-import java.sql.Connection;
 import java.util.Scanner;
 
-import db.DB;
-import model.entities.Department;
-import repository.DepartmentRepository;
-import service.DepartmentService;
-
 public class SellerMenu {
-	
+
 	Scanner sc;
 
 	public SellerMenu(Scanner sc) {
@@ -43,10 +37,10 @@ public class SellerMenu {
 			case 4:
 				System.out.println("Update em andamento");
 				break;
-			case 5: 
+			case 5:
 				System.out.println("Deleção em andamento");
 				break;
-			case 6: 
+			case 6:
 				System.out.println("Returning to Main Menu...");
 				break;
 			default:
@@ -54,6 +48,10 @@ public class SellerMenu {
 			}
 		}
 	}
-
+	
+	private void waitForInput() {
+		System.out.println("Press Enter to continue...");
+	    sc.nextLine();
+	}
 
 }

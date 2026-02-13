@@ -1,15 +1,17 @@
 package application;
 
 import java.sql.Connection;
+import java.util.List;
 import java.util.Scanner;
 
 import db.DB;
+import db.DbException;
 import model.entities.Department;
 import repository.DepartmentRepository;
 import service.DepartmentService;
 
 public class DepartmentMenu {
-	
+
 	Scanner sc;
 
 	public DepartmentMenu(Scanner sc) {
@@ -35,18 +37,18 @@ public class DepartmentMenu {
 				insert();
 				break;
 			case 2:
-				System.out.println("FindById em andamento");
+				findById();
 				break;
 			case 3:
-				System.out.println("FindAll em andamento");
+				findAll();
 				break;
 			case 4:
 				update();
 				break;
-			case 5: 
+			case 5:
 				System.out.println("Deleção em andamento");
 				break;
-			case 6: 
+			case 6:
 				System.out.println("Returning to Main Menu...");
 				break;
 			default:
@@ -54,13 +56,18 @@ public class DepartmentMenu {
 			}
 		}
 	}
+	
+	private void waitForInput() {
+		System.out.println("Press Enter to continue...");
+	    sc.nextLine();
+	}
 
 	private void insert() {
 		// Insert Department
 		System.out.println("Enter the name of the new Department: ");
 		sc.nextLine();
 		String newName = sc.nextLine();
-		
+
 		Connection conn = null;
 		try {
 			conn = DB.getConnection();
@@ -70,21 +77,22 @@ public class DepartmentMenu {
 			Department department = new Department(null, newName);
 			departmentService.insert(department);
 			System.out.println("Inserted! New Id: " + department.getId());
-		} catch (Exception e) {
-			e.printStackTrace();
+			waitForInput();
+		} catch (DbException e) {
+			System.out.println("Database error: " + e.getMessage());
 		} finally {
 			DB.closeConnection();
 		}
 	}
-	
+
 	private void update() {
-		//Update Department
+		// Update Department
 		System.out.println("Enter Deparment Id: ");
 		int id = sc.nextInt();
 		sc.nextLine();
 		System.out.println("Enter new name: ");
 		String newName = sc.nextLine();
-		
+
 		Connection conn = null;
 		try {
 			conn = DB.getConnection();
@@ -94,8 +102,58 @@ public class DepartmentMenu {
 			Department department = new Department(id, newName);
 			departmentService.update(department);
 			System.out.println("Updated completed");
-		} catch (Exception e) {
-			e.printStackTrace();
+			waitForInput();
+		} catch (DbException e) {
+			System.out.println("Database error: " + e.getMessage());
+		} finally {
+			DB.closeConnection();
+		}
+	}
+
+	private void findAll() {
+		// ReadAll Department
+		Connection conn = null;
+		try {
+			conn = DB.getConnection();
+			DepartmentRepository departmentRepository = new DepartmentRepository(conn);
+			DepartmentService departmentService = new DepartmentService(departmentRepository);
+
+			List<Department> departments = departmentService.findAll();
+
+			System.out.println("~~ Departments ~~");
+			for (Department department : departments) {
+				System.out.println(department.toString());
+			}
+			sc.nextLine();
+			waitForInput();
+		} catch (DbException e) {
+			System.out.println("Database error: " + e.getMessage());
+		} finally {
+			DB.closeConnection();
+		}
+	}
+
+	public void findById() {
+		Connection conn = null;
+		System.out.println("Enter Deparment Id: ");
+		int id = sc.nextInt();
+		sc.nextLine();
+		try {
+			conn = DB.getConnection();
+			DepartmentRepository departmentRepository = new DepartmentRepository(conn);
+			DepartmentService departmentService = new DepartmentService(departmentRepository);
+
+			Department department = departmentService.findById(id);
+
+			if (department != null) {
+				System.out.println("~~ Department Found ~~");
+				System.out.println(department.toString());
+			} else {
+				System.out.println("Department not found.");
+			}
+			waitForInput();
+		} catch (DbException e) {
+			System.out.println("Database error: " + e.getMessage());
 		} finally {
 			DB.closeConnection();
 		}
