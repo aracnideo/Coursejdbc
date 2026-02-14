@@ -3,7 +3,7 @@
 This project was developed as part of my studies in Java Database Connectivity (JDBC).  
 It will demonstrate a complete CRUD implementation using Java and MySQL, following clean architecture principles.
 
-# Project Goals
+## Project Goals
 
 - Practice JDBC database connection
 - Implement full CRUD operations
@@ -12,24 +12,14 @@ It will demonstrate a complete CRUD implementation using Java and MySQL, followi
 - Handle SQL exceptions properly
 - Organize code following SOLID principles
 
-# --- Technologies Used ---
+## Technologies Used
 
 - Java 17+
 - JDBC
 - MySQL
 - Git & GitHub
 
-# --- Project Structure ---
-src
-│
-├── application → Program execution and menus
-├── model → Entities (Department, Seller)
-├── repository → Data access layer
-├── service → Business logic layer
-└── db → Database connection and custom exceptions
-
-
-# --- Features ---
+## Features
 
 - Insert new records
 - Update existing records
@@ -37,13 +27,13 @@ src
 - Find by ID
 - List all records
 
-# --- How to Run ---
+## How to Run
 
 1. Create a MySQL database as in 'Database'
 2. Copy 'db.properties.example' to 'db.properties' and configure your credentials.
 3. Run the application
 
-# --- Concepts Practiced ---
+## Concepts Practiced
 
 - JDBC API
 - SQL integration
@@ -51,7 +41,7 @@ src
 - Exception handling
 - Clean code practices
 
-# --- Author ---
+## Author
 
 Marcelo Parabocz  
 Backend Developer in progress.
