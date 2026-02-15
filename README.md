@@ -14,7 +14,7 @@ It will demonstrate a complete CRUD implementation using Java and MySQL, followi
 
 ## Technologies Used
 
-- Java 17+
+- Java 25
 - JDBC
 - MySQL
 - Git & GitHub
