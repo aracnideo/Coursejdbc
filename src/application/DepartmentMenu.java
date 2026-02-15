@@ -9,6 +9,7 @@ import db.DbException;
 import model.entities.Department;
 import repository.DepartmentRepository;
 import service.DepartmentService;
+import util.InputUtils;
 
 public class DepartmentMenu {
 
@@ -29,8 +30,7 @@ public class DepartmentMenu {
 			System.out.println("4 - Update");
 			System.out.println("5 - Delete");
 			System.out.println("6 - Return to Main Menu");
-			System.out.println("Choose an option:");
-			option = sc.nextInt();
+			option = InputUtils.readInt(sc, "Choose an option: ");
 
 			switch (option) {
 			case 1:
@@ -55,6 +55,7 @@ public class DepartmentMenu {
 				break;
 			case 6:
 				System.out.println("Returning to Main Menu...");
+				System.out.println();
 				break;
 			default:
 				System.out.println("Invalid option");
@@ -69,9 +70,7 @@ public class DepartmentMenu {
 
 	private void insert() {
 		// Insert Department
-		System.out.println("Enter the name of the new Department: ");
-		sc.nextLine();
-		String newName = sc.nextLine();
+		String newName = InputUtils.readNonEmptyString(sc, "Enter the name of the new department: ");
 
 		Connection conn = null;
 		try {
@@ -92,11 +91,8 @@ public class DepartmentMenu {
 
 	private void update() {
 		// Update Department
-		System.out.println("Enter Deparment Id: ");
-		int id = sc.nextInt();
-		sc.nextLine();
-		System.out.println("Enter new name: ");
-		String newName = sc.nextLine();
+		int id = InputUtils.readInt(sc, "Enter deparment Id: ");
+		String newName = InputUtils.readNonEmptyString(sc, "Enter new name for the department: ");
 
 		Connection conn = null;
 		try {
@@ -120,16 +116,16 @@ public class DepartmentMenu {
 		Connection conn = null;
 		try {
 			conn = DB.getConnection();
-			DepartmentRepository departmentRepository = new DepartmentRepository(conn);
-			DepartmentService departmentService = new DepartmentService(departmentRepository);
+			DepartmentRepository repository = new DepartmentRepository(conn);
+			DepartmentService service = new DepartmentService(repository);
 
-			List<Department> departments = departmentService.findAll();
+			List<Department> departments = service.findAll();
 
 			System.out.println("~~ Departments ~~");
 			for (Department department : departments) {
 				System.out.println(department.toString());
 			}
-			sc.nextLine();
+			System.out.println();
 			waitForInput();
 		} catch (DbException e) {
 			System.out.println("Database error: " + e.getMessage());
@@ -141,9 +137,7 @@ public class DepartmentMenu {
 	public void findById() {
 		// FindById Department
 		Connection conn = null;
-		System.out.println("Enter Deparment Id: ");
-		int id = sc.nextInt();
-		sc.nextLine();
+		int id = InputUtils.readInt(sc, "Enter deparment Id: ");
 		try {
 			conn = DB.getConnection();
 			DepartmentRepository departmentRepository = new DepartmentRepository(conn);
@@ -168,16 +162,13 @@ public class DepartmentMenu {
 	public void delete() {
 		// Delete Department
 		Connection conn = null;
-		System.out.println("Enter Deparment Id: ");
-		int id = sc.nextInt();
-		sc.nextLine();
+		int id = InputUtils.readInt(sc, "Enter deparment Id: ");
 
 		try {
 			conn = DB.getConnection();
 			DepartmentRepository departmentRepository = new DepartmentRepository(conn);
 			DepartmentService departmentService = new DepartmentService(departmentRepository);
 //			departmentService.delete(id);
-			
 
 		} catch (DbException e) {
 			System.out.println("Database error: " + e.getMessage());

@@ -1,6 +1,8 @@
 package application;
 import java.util.Scanner;
 
+import util.InputUtils;
+
 public class Program {
 
 	public static void main(String[] args) {
@@ -16,8 +18,7 @@ public class Program {
 			System.out.println("1 - Deparment");
 			System.out.println("2 - Seller");
 			System.out.println("3 - Close application");
-			System.out.println("Choose an option:");
-			option = sc.nextInt();
+			option = InputUtils.readInt(sc, "Choose an option: ");
 
 			switch (option) {
 			case 1:

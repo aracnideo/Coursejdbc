@@ -13,6 +13,7 @@ import repository.DepartmentRepository;
 import repository.SellerRepository;
 import service.DepartmentService;
 import service.SellerService;
+import util.InputUtils;
 
 public class SellerMenu {
 
@@ -33,8 +34,7 @@ public class SellerMenu {
 			System.out.println("4 - Update");
 			System.out.println("5 - Delete");
 			System.out.println("6 - Return to Main Menu");
-			System.out.println("Choose an option:");
-			option = sc.nextInt();
+			option = InputUtils.readInt(sc, "Choose an option: ");
 
 			switch (option) {
 			case 1:
@@ -57,6 +57,7 @@ public class SellerMenu {
 				break;
 			case 6:
 				System.out.println("Returning to Main Menu...");
+				System.out.println();
 				break;
 			default:
 				System.out.println("Invalid option");
@@ -74,11 +75,8 @@ public class SellerMenu {
 		Connection conn = null;
 		try {
 			conn = DB.getConnection();
-			System.out.println("Enter the name of the new seller: ");
-			sc.nextLine();
-			String name = sc.nextLine();
-			System.out.println("Enter the email of the new seller: ");
-			String email = sc.nextLine();
+			String name = InputUtils.readNonEmptyString(sc, "Enter the name of the new seller: ");
+			String email = InputUtils.readNonEmptyString(sc, "Enter the email of the new seller: ");
 
 			LocalDate birthDate = null;
 			boolean validBirthDate = false;
@@ -93,18 +91,14 @@ public class SellerMenu {
 				}
 			}
 
-			System.out.println("Enter the base salary of the new seller: ");
-			double baseSalary = sc.nextDouble();
-			sc.nextLine();
-			Department department = null;
+			double baseSalary = InputUtils.readDouble(sc, "Enter the base salary of the new seller: ");
 
+			Department department = null;
 			DepartmentRepository departmentRepository = new DepartmentRepository(conn);
 			DepartmentService departmentService = new DepartmentService(departmentRepository);
 
 			while (department == null) {
-				System.out.println("Enter the department ID of the new seller: ");
-				int departmentId = sc.nextInt();
-				sc.nextLine();
+				int departmentId = InputUtils.readInt(sc, "Enter the department ID of the new seller: ");
 				department = departmentService.findById(departmentId);
 				if (department == null) {
 					System.out.println("Department ID not found. Please try again.");
@@ -140,7 +134,7 @@ public class SellerMenu {
 			for (Seller seller : sellers) {
 				System.out.println(seller.toString());
 			}
-			sc.nextLine();
+			System.out.println();
 			waitForInput();
 		} catch (DbException e) {
 			System.out.println("Database error: " + e.getMessage());
@@ -152,9 +146,7 @@ public class SellerMenu {
 	public void findById() {
 		// FindById Seller
 		Connection conn = null;
-		System.out.println("Enter Seller Id: ");
-		int id = sc.nextInt();
-		sc.nextLine();
+		int id = InputUtils.readInt(sc, "Enter seller Id: ");
 		try {
 			conn = DB.getConnection();
 			SellerRepository repository = new SellerRepository(conn);
