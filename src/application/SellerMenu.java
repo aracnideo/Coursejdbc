@@ -11,6 +11,7 @@ import model.entities.Department;
 import model.entities.Seller;
 import repository.DepartmentRepository;
 import repository.SellerRepository;
+import service.DepartmentService;
 import service.SellerService;
 
 public class SellerMenu {
@@ -97,12 +98,14 @@ public class SellerMenu {
 			sc.nextLine();
 			Department department = null;
 
+			DepartmentRepository departmentRepository = new DepartmentRepository(conn);
+			DepartmentService departmentService = new DepartmentService(departmentRepository);
+
 			while (department == null) {
-				DepartmentRepository departmentRepository = new DepartmentRepository(conn);
 				System.out.println("Enter the department ID of the new seller: ");
 				int departmentId = sc.nextInt();
 				sc.nextLine();
-				department = departmentRepository.findById(departmentId);
+				department = departmentService.findById(departmentId);
 				if (department == null) {
 					System.out.println("Department ID not found. Please try again.");
 				}
@@ -122,7 +125,7 @@ public class SellerMenu {
 			DB.closeConnection();
 		}
 	}
-	
+
 	private void findAll() {
 		// FindAll Seller
 		Connection conn = null;
@@ -145,8 +148,9 @@ public class SellerMenu {
 			DB.closeConnection();
 		}
 	}
-	
+
 	public void findById() {
+		// FindById Seller
 		Connection conn = null;
 		System.out.println("Enter Seller Id: ");
 		int id = sc.nextInt();
@@ -170,5 +174,9 @@ public class SellerMenu {
 		} finally {
 			DB.closeConnection();
 		}
+	}
+
+	public void delete() {
+
 	}
 }
